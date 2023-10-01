@@ -10,25 +10,25 @@ import Data.Aeson.Types (FromJSON(parseJSON))
 import Data.Aeson.Casing (snakeCase, aesonDrop)
 
 data DiscoveryURLs = DiscoveryURLs
-  { companySocialInviteBySlug :: URL
-  , registerProspectSavingsWeb :: URL
-  , commonXp :: URL
-  , pusherAuthChannel :: URL
-  , applicationStatusByTaxId :: URL
-  , resetPassword :: URL
+  { companySocialInviteBySlug      :: URL
+  , registerProspectSavingsWeb     :: URL
+  , commonXp                       :: URL
+  , pusherAuthChannel              :: URL
+  , applicationStatusByTaxId       :: URL
+  , resetPassword                  :: URL
   , registerProspectUltravioletWeb :: URL
-  , businessCardWaitlist :: URL
-  , registerProspect :: URL
-  , registerProspectGlobalWeb :: URL
-  , registerProspectC :: URL
-  , requestPasswordReset :: URL
-  , authGenCertificates :: URL
-  , login :: URL
-  , emailVerify :: URL
-  , registerProspectCompany :: URL
-  , getCustomerSessions :: URL
-  , authDeviceResendCode :: URL
-  , msat :: URL
+  , businessCardWaitlist           :: URL
+  , registerProspect               :: URL
+  , registerProspectGlobalWeb      :: URL
+  , registerProspectC              :: URL
+  , requestPasswordReset           :: URL
+  , authGenCertificates            :: URL
+  , login                          :: URL
+  , emailVerify                    :: URL
+  , registerProspectCompany        :: URL
+  , getCustomerSessions            :: URL
+  , authDeviceResendCode           :: URL
+  , msat                           :: URL
   } deriving (Show, Eq, Generic)
 
 instance ToJSON DiscoveryURLs where
