@@ -1,18 +1,18 @@
 {-# LANGUAGE DeriveGeneric #-}
 
-module Discovery (DiscoveryURLs, getDiscoveryUrls) where
+module Discovery ( DiscoveryURLs, getProxyUrls ) where
 
-import Prolog (URL)
-import Network.HTTP.Simple (parseRequest, getResponseBody, httpJSON)
-import GHC.Generics (Generic)
-import Data.Aeson (ToJSON (toJSON), FromJSON, genericToJSON, genericParseJSON)
-import Data.Aeson.Types (FromJSON(parseJSON))
-import Data.Aeson.Casing (aesonPrefix, snakeCase)
+import Prolog ( URL )
+import Network.HTTP.Simple ( parseRequest, getResponseBody, httpJSON )
+import GHC.Generics ( Generic )
+import Data.Aeson ( ToJSON (toJSON), FromJSON, genericToJSON, genericParseJSON )
+import Data.Aeson.Types ( FromJSON(parseJSON) )
+import Data.Aeson.Casing ( snakeCase, aesonDrop )
 
 data DiscoveryURLs = DiscoveryURLs
   { companySocialInviteBySlug :: URL
   , registerProspectSavingsWeb :: URL
-  , commonXP :: URL
+  , commonXp :: URL
   , pusherAuthChannel :: URL
   , applicationStatusByTaxId :: URL
   , resetPassword :: URL
@@ -32,16 +32,16 @@ data DiscoveryURLs = DiscoveryURLs
   } deriving (Show, Eq, Generic)
 
 instance ToJSON DiscoveryURLs where
-  toJSON = genericToJSON $ aesonPrefix snakeCase
+  toJSON = genericToJSON $ aesonDrop 0 snakeCase
 
 instance FromJSON DiscoveryURLs where
-  parseJSON = genericParseJSON $ aesonPrefix snakeCase
+  parseJSON = genericParseJSON $ aesonDrop 0 snakeCase
 
 discoveryUrl :: URL
 discoveryUrl = "https://prod-s0-webapp-proxy.nubank.com.br/api/discovery"
 
-getDiscoveryUrls :: IO DiscoveryURLs
-getDiscoveryUrls = do
+getProxyUrls :: IO DiscoveryURLs
+getProxyUrls = do
   request <- parseRequest discoveryUrl
   response <- httpJSON request
   return (getResponseBody response :: DiscoveryURLs)

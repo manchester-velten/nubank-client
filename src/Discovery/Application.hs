@@ -1,13 +1,17 @@
 {-# LANGUAGE DeriveGeneric #-}
 
-module Discovery.Application (FAQDiscoveryURLs, ApplicationDiscoveryURLs, getUrls) where
+module Discovery.Application
+  ( FAQDiscoveryURLs
+  , ApplicationDiscoveryURLs
+  , getApplicationProxyUrls
+  ) where
 
-import Prolog (URL)
-import Network.HTTP.Simple (parseRequest, getResponseBody, httpJSON)
-import GHC.Generics (Generic)
-import Data.Aeson (ToJSON (toJSON), FromJSON, genericToJSON, genericParseJSON)
-import Data.Aeson.Types (FromJSON(parseJSON))
-import Data.Aeson.Casing (aesonPrefix, snakeCase)
+import Prolog ( URL )
+import Network.HTTP.Simple ( parseRequest, getResponseBody, httpJSON )
+import GHC.Generics ( Generic )
+import Data.Aeson ( ToJSON (toJSON), FromJSON, genericToJSON, genericParseJSON )
+import Data.Aeson.Types ( FromJSON (parseJSON) )
+import Data.Aeson.Casing ( snakeCase, aesonDrop )
 
 data FAQDiscoveryURLs = FAQDiscoveryURLs
   { ios  :: URL
@@ -16,10 +20,10 @@ data FAQDiscoveryURLs = FAQDiscoveryURLs
   } deriving (Show, Eq, Generic)
 
 instance ToJSON FAQDiscoveryURLs where
-  toJSON = genericToJSON $ aesonPrefix snakeCase
+  toJSON = genericToJSON $ aesonDrop 0 snakeCase
 
 instance FromJSON FAQDiscoveryURLs where
-  parseJSON = genericParseJSON $ aesonPrefix snakeCase
+  parseJSON = genericParseJSON $ aesonDrop 0 snakeCase
 
 data ApplicationDiscoveryURLs = ApplicationDiscoveryURLs
   { unloggedChallengePlatform  :: URL
@@ -40,12 +44,12 @@ data ApplicationDiscoveryURLs = ApplicationDiscoveryURLs
   , resetPassword  :: URL
   , openTelemetryTracing  :: URL
   , unblock  :: URL
-  , shardMappingCNPJ  :: URL
-  , shardMappingCPF  :: URL
+  , shardMappingCnpj  :: URL
+  , shardMappingCpf  :: URL
   , registerProspect  :: URL
   , engage  :: URL
   , accountRecoveryV2  :: URL
-  , sendDataToETL  :: URL
+  , sendDataToEtl  :: URL
   , creationWithCredentials  :: URL
   , magnitude  :: URL
   , revokeAll  :: URL
@@ -79,16 +83,16 @@ data ApplicationDiscoveryURLs = ApplicationDiscoveryURLs
   } deriving (Show, Eq, Generic)
 
 instance ToJSON ApplicationDiscoveryURLs where
-  toJSON = genericToJSON $ aesonPrefix snakeCase
+  toJSON = genericToJSON $ aesonDrop 0 snakeCase
 
 instance FromJSON ApplicationDiscoveryURLs where
-  parseJSON = genericParseJSON $ aesonPrefix snakeCase
+  parseJSON = genericParseJSON $ aesonDrop 0 snakeCase
 
 discoveryUrl  :: URL
 discoveryUrl = "https://prod-s0-webapp-proxy.nubank.com.br/api/app/discovery"
 
-getUrls :: IO ApplicationDiscoveryURLs
-getUrls = do
+getApplicationProxyUrls :: IO ApplicationDiscoveryURLs
+getApplicationProxyUrls = do
   request <- parseRequest discoveryUrl
   response <- httpJSON request
   return (getResponseBody response :: ApplicationDiscoveryURLs)

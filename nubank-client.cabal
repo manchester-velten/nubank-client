@@ -37,9 +37,7 @@ executable nubank-client
     -- other-extensions:
     build-depends:
         base ^>=4.17.2.0,
-        nubank-client,
-        Chart,
-        Chart-diagrams
+        nubank-client
 
     hs-source-dirs:   app
     default-language: Haskell2010
