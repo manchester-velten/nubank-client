@@ -6,13 +6,12 @@ import Nubank (getProxyUrls, getApplicationProxyUrls)
 import Test.Tasty.Providers (TestTree)
 
 tests :: TestTree
-tests =
-  testGroup "Discovery" [
-    testGroup "Proxy URLs" [
-      testCase "Should load proxy URLs without errors" $ do
+tests = testGroup "Discovery"
+  [ testGroup "Proxy URLs"
+    [ testCase "Should load proxy URLs without errors" $ do
         _ <- getProxyUrls
-        return (),
-      testCase "Should load application proxy URLs without errors" $ do
+        return ()
+    , testCase "Should load application proxy URLs without errors" $ do
         _ <- getApplicationProxyUrls
         return ()
     ]

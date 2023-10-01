@@ -6,6 +6,6 @@ import Test.Tasty.Providers (TestTree)
 
 tests :: TestTree
 tests =
-  testGroup "All tests" [
-    Discovery.tests
-  ]
+  testGroup "All tests"
+    [ Discovery.tests
+    ]
