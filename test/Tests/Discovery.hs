@@ -9,10 +9,10 @@ tests :: TestTree
 tests =
   testGroup "Discovery" [
     testGroup "Proxy URLs" [
-      testCase "Load Proxy URLs" $ do
+      testCase "Should load proxy URLs without errors" $ do
         _ <- getProxyUrls
         return (),
-      testCase "Application Proxy URLs" $ do
+      testCase "Should load application proxy URLs without errors" $ do
         _ <- getApplicationProxyUrls
         return ()
     ]
