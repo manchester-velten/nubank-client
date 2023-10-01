@@ -35,7 +35,8 @@ library
         http-conduit,
         uuid,
         random,
-        bytestring
+        bytestring,
+        time
     hs-source-dirs:   src
     default-language: Haskell2010
 
