@@ -1,8 +1,8 @@
 {-# LANGUAGE DeriveGeneric #-}
 
-module Discovery (DiscoveryURLs, getProxyUrls) where
+module Nubank.Discovery (DiscoveryURLs, getProxyUrls) where
 
-import Prolog (URL)
+import Nubank.Prolog (URL)
 import Network.HTTP.Simple (parseRequest, getResponseBody, httpJSON)
 import GHC.Generics (Generic)
 import Data.Aeson (ToJSON (toJSON), FromJSON, genericToJSON, genericParseJSON)

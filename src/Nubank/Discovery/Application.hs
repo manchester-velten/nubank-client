@@ -1,12 +1,12 @@
 {-# LANGUAGE DeriveGeneric #-}
 
-module Discovery.Application
+module Nubank.Discovery.Application
   ( FAQDiscoveryURLs
   , ApplicationDiscoveryURLs
   , getApplicationProxyUrls
   ) where
 
-import Prolog (URL)
+import Nubank.Prolog (URL)
 import Network.HTTP.Simple (parseRequest, getResponseBody, httpJSON)
 import GHC.Generics (Generic)
 import Data.Aeson (ToJSON (toJSON), FromJSON, genericToJSON, genericParseJSON)

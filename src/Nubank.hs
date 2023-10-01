@@ -1,9 +1,9 @@
 module Nubank
-  ( module Prolog
-  , module Discovery
-  , module Discovery.Application
+  ( module Nubank.Prolog
+  , module Nubank.Discovery
+  , module Nubank.Discovery.Application
   ) where
 
-import Prolog
-import Discovery
-import Discovery.Application
+import Nubank.Prolog
+import Nubank.Discovery
+import Nubank.Discovery.Application
