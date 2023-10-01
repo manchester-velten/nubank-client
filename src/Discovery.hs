@@ -1,13 +1,13 @@
 {-# LANGUAGE DeriveGeneric #-}
 
-module Discovery ( DiscoveryURLs, getProxyUrls ) where
+module Discovery (DiscoveryURLs, getProxyUrls) where
 
-import Prolog ( URL )
-import Network.HTTP.Simple ( parseRequest, getResponseBody, httpJSON )
-import GHC.Generics ( Generic )
-import Data.Aeson ( ToJSON (toJSON), FromJSON, genericToJSON, genericParseJSON )
-import Data.Aeson.Types ( FromJSON(parseJSON) )
-import Data.Aeson.Casing ( snakeCase, aesonDrop )
+import Prolog (URL)
+import Network.HTTP.Simple (parseRequest, getResponseBody, httpJSON)
+import GHC.Generics (Generic)
+import Data.Aeson (ToJSON (toJSON), FromJSON, genericToJSON, genericParseJSON)
+import Data.Aeson.Types (FromJSON(parseJSON))
+import Data.Aeson.Casing (snakeCase, aesonDrop)
 
 data DiscoveryURLs = DiscoveryURLs
   { companySocialInviteBySlug :: URL

@@ -1,3 +1,3 @@
-module Prolog ( URL ) where
+module Prolog (URL) where
 
 type URL = String

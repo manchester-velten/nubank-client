@@ -1,8 +1,8 @@
 module Nubank
-  ( module Prolog
+  (module Prolog
   , module Discovery
   , module Discovery.Application
-  ) where
+ ) where
 
 import Prolog
 import Discovery
