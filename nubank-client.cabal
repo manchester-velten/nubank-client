@@ -20,10 +20,7 @@ common warnings
 library
     import:           warnings
     exposed-modules:  Nubank
-    other-modules:
-        Internal.Discovery,
-        Internal.Types,
-        Internal.Types.Application
+    other-modules:    Prolog, Discovery, Discovery.Application
     -- other-extensions:
     build-depends:
         base ^>=4.17.2.0,
