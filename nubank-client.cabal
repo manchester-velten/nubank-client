@@ -14,27 +14,33 @@ build-type:         Simple
 extra-doc-files:    CHANGELOG.md
 -- extra-source-files:
 
-common warnings
+common settings
     ghc-options: -Wall
+    default-extensions:
+        OverloadedStrings
 
 library
-    import:           warnings
+    import:           settings
     exposed-modules:  Nubank
     other-modules:
         Nubank.Prolog,
         Nubank.Discovery,
-        Nubank.Discovery.Application
+        Nubank.Discovery.Application,
+        Nubank.HttpClient
     -- other-extensions:
     build-depends:
         base ^>=4.17.2.0,
         aeson,
         aeson-casing,
-        http-conduit
+        http-conduit,
+        uuid,
+        random,
+        bytestring
     hs-source-dirs:   src
     default-language: Haskell2010
 
 executable nubank-client
-    import:           warnings
+    import:           settings
     main-is:          Main.hs
     -- other-modules:
     -- other-extensions:
@@ -46,7 +52,7 @@ executable nubank-client
     default-language: Haskell2010
 
 test-suite nubank-client-test
-    import:           warnings
+    import:           settings
     default-language: Haskell2010
     other-modules:    Tests, Tests.Discovery
     -- other-extensions:

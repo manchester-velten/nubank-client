@@ -7,11 +7,12 @@ module Nubank.Discovery.Application
   ) where
 
 import Nubank.Prolog (URL)
-import Network.HTTP.Simple (parseRequest, getResponseBody, httpJSON)
+import Network.HTTP.Simple (parseRequest, getResponseBody, httpJSON, setRequestHeaders)
 import GHC.Generics (Generic)
 import Data.Aeson (ToJSON (toJSON), FromJSON, genericToJSON, genericParseJSON)
 import Data.Aeson.Types (FromJSON (parseJSON))
 import Data.Aeson.Casing (snakeCase, aesonDrop)
+import Nubank.HttpClient (getHeaders)
 
 data FAQDiscoveryURLs = FAQDiscoveryURLs
   { ios      :: URL
@@ -93,6 +94,8 @@ discoveryUrl = "https://prod-s0-webapp-proxy.nubank.com.br/api/app/discovery"
 
 getApplicationProxyUrls :: IO ApplicationDiscoveryURLs
 getApplicationProxyUrls = do
-  request <- parseRequest discoveryUrl
+  headers <- getHeaders
+  request' <- parseRequest discoveryUrl
+  let request = setRequestHeaders headers request'
   response <- httpJSON request
   return (getResponseBody response :: ApplicationDiscoveryURLs)
