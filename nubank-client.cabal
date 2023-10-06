@@ -21,13 +21,12 @@ common settings
 
 library
     import:           settings
-    exposed-modules:  Nubank
+    exposed-modules:  Nubank, Nubank.Login
     other-modules:
         Nubank.Prolog,
         Nubank.Discovery,
         Nubank.Discovery.Application,
-        Nubank.HttpClient,
-        Nubank.Login
+        Nubank.HttpClient
     -- other-extensions:
     build-depends:
         base ^>=4.17.2.0,

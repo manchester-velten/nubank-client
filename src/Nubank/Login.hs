@@ -1,6 +1,13 @@
 {-# LANGUAGE DeriveGeneric #-}
 
-module Nubank.Login where
+module Nubank.Login
+  ( PasswordAuthRequest (..)
+  , PasswordAuthResponse (..)
+  , GrantType (..)
+  , TokenType (..)
+  , Links (..)
+  , passwordAuth
+  ) where
 
 import Data.Aeson
 import GHC.Generics
@@ -23,7 +30,7 @@ instance FromJSON TokenType where
   parseJSON (String "bearer") = do return Bearer
   parseJSON _ = empty
 
-data LoginRequest = LoginRequest
+data PasswordAuthRequest = PasswordAuthRequest
   { grantType    :: GrantType
   , login        :: String
   , password     :: String
@@ -31,7 +38,7 @@ data LoginRequest = LoginRequest
   , clientSecret :: String
   } deriving (Show, Eq, Generic)
 
-instance ToJSON LoginRequest where
+instance ToJSON PasswordAuthRequest where
   toJSON = genericToJSON $ aesonDrop 0 snakeCase
 
 newtype Link = Link
@@ -57,7 +64,7 @@ data Links = Links
 instance FromJSON Links where
   parseJSON = genericParseJSON $ aesonDrop 0 snakeCase
 
-data LoginResponse = LoginResponse
+data PasswordAuthResponse = PasswordAuthResponse
   { accessToken   :: String
   , tokenType     :: TokenType
   , links         :: Links
@@ -65,10 +72,10 @@ data LoginResponse = LoginResponse
   , refreshBefore :: UTCTime
   } deriving (Show, Eq, Generic)
 
-instance FromJSON LoginResponse where
+instance FromJSON PasswordAuthResponse where
   parseJSON = genericParseJSON $ aesonDrop 0 snakeCase
 
-passwordAuth :: LoginRequest -> IO LoginResponse
+passwordAuth :: PasswordAuthRequest -> IO PasswordAuthResponse
 passwordAuth request = do
   loginUrl <- getLoginUrl
   postJSON loginUrl request
