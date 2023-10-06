@@ -1,6 +1,6 @@
-module Main where
+module Main (main) where
 
-import Nubank (getProxyUrls, getApplicationProxyUrls)
+import Nubank
 
 main :: IO ()
 main = do

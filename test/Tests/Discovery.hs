@@ -1,9 +1,8 @@
 module Tests.Discovery (tests) where
 
-import Test.Tasty (testGroup)
-import Test.Tasty.HUnit (testCase)
-import Nubank (getProxyUrls, getApplicationProxyUrls)
-import Test.Tasty.Providers (TestTree)
+import Test.Tasty
+import Test.Tasty.HUnit
+import Nubank
 
 tests :: TestTree
 tests = testGroup "Discovery"

@@ -1,12 +1,11 @@
-module Nubank.HttpClient (getJSON) where
+module Nubank.HttpClient (getJSON, postJSON) where
 
-import Network.HTTP.Simple (RequestHeaders, setRequestHeaders, httpJSON, getResponseBody)
-import System.Random (Random(random), getStdGen)
-import Data.UUID (toASCIIBytes)
-import Data.ByteString (ByteString)
-import Data.Aeson (FromJSON)
-import Nubank.Prolog (URL)
-import Network.HTTP.Client.Conduit (parseRequest)
+import Network.HTTP.Simple
+import System.Random
+import Data.UUID
+import Data.ByteString
+import Data.Aeson
+import Nubank.Prolog
 
 getHeaders :: IO RequestHeaders
 getHeaders = do
@@ -24,4 +23,14 @@ getJSON url = do
   headers <- getHeaders
   request <- setRequestHeaders headers <$> parseRequest url
   response <- httpJSON request
+  return (getResponseBody response)
+
+postJSON :: (ToJSON a, FromJSON b) => URL -> a -> IO b
+postJSON url body = do
+  headers  <-  getHeaders
+  request  <-  setRequestMethod "POST"
+            .  setRequestHeaders headers
+            .  setRequestBodyJSON body
+           <$> parseRequest url
+  response <-  httpJSON request
   return (getResponseBody response)

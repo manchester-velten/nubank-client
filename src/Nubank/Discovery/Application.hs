@@ -6,12 +6,11 @@ module Nubank.Discovery.Application
   , getApplicationProxyUrls
   ) where
 
-import Nubank.Prolog (URL)
-import GHC.Generics (Generic)
-import Data.Aeson (ToJSON (toJSON), FromJSON, genericToJSON, genericParseJSON)
-import Data.Aeson.Types (FromJSON (parseJSON))
-import Data.Aeson.Casing (snakeCase, aesonDrop)
-import Nubank.HttpClient (getJSON)
+import Nubank.Prolog
+import GHC.Generics
+import Data.Aeson
+import Data.Aeson.Casing
+import Nubank.HttpClient
 
 data FAQDiscoveryURLs = FAQDiscoveryURLs
   { ios      :: URL

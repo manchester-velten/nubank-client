@@ -26,7 +26,8 @@ library
         Nubank.Prolog,
         Nubank.Discovery,
         Nubank.Discovery.Application,
-        Nubank.HttpClient
+        Nubank.HttpClient,
+        Nubank.Login
     -- other-extensions:
     build-depends:
         base ^>=4.17.2.0,
