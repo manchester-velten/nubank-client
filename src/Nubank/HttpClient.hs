@@ -10,6 +10,7 @@ getHeaders = do
   return
     [ ("X-Correlation-Id", correlationId)
     , ("User-Agent", "Nubank Haskell Client (nubank-client) - https://github.com/manchester-velten/nubank-client")
+    , ("Content-Type", "application/json")
     ]
 
 getJSON :: (FromJSON a) => URL -> IO a

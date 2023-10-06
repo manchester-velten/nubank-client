@@ -31,12 +31,18 @@ instance FromJSON TokenType where
   parseJSON (String "bearer") = do return Bearer
   parseJSON _ = empty
 
+data RefreshToken = StringToken deriving (Show, Eq)
+
+instance FromJSON RefreshToken where
+  parseJSON (String "string token") = do return StringToken
+  parseJSON _ = empty
+
 data PasswordAuthRequest = PasswordAuthRequest
   { login        :: Login
   , password     :: Password
   , clientId     :: String
   , clientSecret :: String
-  } deriving (Show, Eq, Generic)
+  } deriving (Show, Eq)
 
 instance ToJSON PasswordAuthRequest where
   toJSON request =
@@ -49,7 +55,10 @@ instance ToJSON PasswordAuthRequest where
 
 newtype Link = Link
   { href :: URL
-  } deriving (Show, Eq, Generic)
+  } deriving (Eq, Generic)
+
+instance Show Link where
+  show l = show $ href l
 
 instance FromJSON Link where
   parseJSON = genericParseJSON $ aesonDrop 0 snakeCase
@@ -73,8 +82,8 @@ instance FromJSON Links where
 data PasswordAuthResponse = PasswordAuthResponse
   { accessToken   :: String
   , tokenType     :: TokenType
-  , links         :: Links
-  , refreshToken  :: String
+  , _links        :: Links
+  , refreshToken  :: RefreshToken
   , refreshBefore :: UTCTime
   } deriving (Show, Eq, Generic)
 
