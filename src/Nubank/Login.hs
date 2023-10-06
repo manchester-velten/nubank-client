@@ -3,10 +3,12 @@
 module Nubank.Login
   ( PasswordAuthRequest (..)
   , PasswordAuthResponse (..)
-  , GrantType (..)
+  , Login
+  , Password
   , TokenType (..)
   , Links (..)
   , passwordAuth
+  , passwordAuthSimple
   ) where
 
 import Data.Aeson
@@ -19,10 +21,9 @@ import Data.String
 import Data.Time.Clock
 import Nubank.HttpClient
 
-data GrantType = Password deriving (Show, Eq)
+type Login = String
 
-instance ToJSON GrantType where
-  toJSON Password = String "password"
+type Password = String
 
 data TokenType = Bearer deriving (Show, Eq)
 
@@ -31,15 +32,20 @@ instance FromJSON TokenType where
   parseJSON _ = empty
 
 data PasswordAuthRequest = PasswordAuthRequest
-  { grantType    :: GrantType
-  , login        :: String
-  , password     :: String
+  { login        :: Login
+  , password     :: Password
   , clientId     :: String
   , clientSecret :: String
   } deriving (Show, Eq, Generic)
 
 instance ToJSON PasswordAuthRequest where
-  toJSON = genericToJSON $ aesonDrop 0 snakeCase
+  toJSON request =
+    object [ "grant_type"    .= String "password"
+           , "login"         .= login request
+           , "password"      .= password request
+           , "client_id"     .= clientId request
+           , "client_secret" .= clientSecret request
+           ]
 
 newtype Link = Link
   { href :: URL
@@ -79,3 +85,13 @@ passwordAuth :: PasswordAuthRequest -> IO PasswordAuthResponse
 passwordAuth request = do
   loginUrl <- getLoginUrl
   postJSON loginUrl request
+
+passwordAuthSimple :: Login -> Password -> IO PasswordAuthResponse
+passwordAuthSimple usr pwd = do
+  let request = PasswordAuthRequest
+       { login        = usr
+       , password     = pwd
+       , clientId     = "nubank-client-haskell"
+       , clientSecret = "02ee8b31a70502a98454004481e1070ef28cc7c0cf8d623008904d607637556f"
+       }
+  passwordAuth request

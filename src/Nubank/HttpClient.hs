@@ -1,22 +1,16 @@
 module Nubank.HttpClient (getJSON, postJSON) where
 
 import Network.HTTP.Simple
-import System.Random
-import Data.UUID
-import Data.ByteString
 import Data.Aeson
 import Nubank.Prolog
 
 getHeaders :: IO RequestHeaders
 getHeaders = do
-  correlationId <- getCorrelationId
+  correlationId <- getUUIDString
   return
     [ ("X-Correlation-Id", correlationId)
     , ("User-Agent", "Nubank Haskell Client (nubank-client) - https://github.com/manchester-velten/nubank-client")
     ]
-  where
-    getCorrelationId :: IO ByteString
-    getCorrelationId = toASCIIBytes .fst . random <$> getStdGen
 
 getJSON :: (FromJSON a) => URL -> IO a
 getJSON url = do
