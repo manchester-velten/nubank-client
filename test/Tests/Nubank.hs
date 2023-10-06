@@ -1,4 +1,4 @@
-module Tests.Discovery (tests) where
+module Tests.Nubank (tests) where
 
 import Test.Tasty
 import Test.Tasty.HUnit

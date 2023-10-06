@@ -55,7 +55,7 @@ executable nubank-client
 test-suite nubank-client-test
     import:           settings
     default-language: Haskell2010
-    other-modules:    Tests, Tests.Discovery
+    other-modules:    Tests, Tests.Nubank, Tests.Nubank.Login
     -- other-extensions:
     type:             exitcode-stdio-1.0
     hs-source-dirs:   test
@@ -64,4 +64,5 @@ test-suite nubank-client-test
         base ^>=4.17.2.0,
         nubank-client,
         tasty,
-        tasty-hunit
+        tasty-hunit,
+        aeson
