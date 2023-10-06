@@ -1,12 +1,10 @@
 module Main (main) where
 
-import Nubank
+import Nubank.Login
+import System.Environment
 
 main :: IO ()
 main = do
-  urls <- getProxyUrls
-  putStrLn "Proxy URLs:"
-  print urls
-  applicationURLs <- getApplicationProxyUrls
-  putStrLn "Proxy Application URLs:"
-  print applicationURLs
+  [usr,pwd] <- getArgs
+  loginResponse <- passwordAuthSimple usr pwd
+  print loginResponse
