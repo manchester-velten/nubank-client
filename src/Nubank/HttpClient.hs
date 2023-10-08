@@ -6,7 +6,7 @@ import Nubank.Prolog
 
 defaultHeaders :: IO RequestHeaders
 defaultHeaders = do
-  correlationId <- getUUIDString
+  correlationId <- newUUIDByteString
   return
     [ ("X-Correlation-Id", correlationId)
     , ("User-Agent", "Nubank Haskell Client (nubank-client) - https://github.com/manchester-velten/nubank-client")
@@ -17,8 +17,8 @@ defaultPostHeaders = ("Content-Type", "application/json") <:> defaultHeaders
 
 getJSON :: (FromJSON a) => URL -> IO a
 getJSON url = do
-  headers <- defaultPostHeaders
-  request <- setRequestHeaders headers <$> parseRequest url
+  headers  <- defaultPostHeaders
+  request  <- setRequestHeaders headers <$> parseRequest url
   response <- httpJSON request
   return (getResponseBody response)
 

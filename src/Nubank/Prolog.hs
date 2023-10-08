@@ -1,13 +1,16 @@
-module Nubank.Prolog (URL, getUUIDString, (<:>)) where
+module Nubank.Prolog (URL, newUUIDByteString, (<:>)) where
 
 import System.Random
-import Data.UUID
+import qualified Data.UUID as UUID
 import Data.ByteString
 
 type URL = String
 
-getUUIDString :: IO ByteString
-getUUIDString = toASCIIBytes . fst . random <$> getStdGen
+generateRandom :: (Random a) => IO a
+generateRandom = fst . random <$> getStdGen
+
+newUUIDByteString :: IO ByteString
+newUUIDByteString = UUID.toASCIIBytes <$> generateRandom
 
 (<:>) :: Monad m => a -> m [a] -> m [a]
 (<:>) x xs = do
