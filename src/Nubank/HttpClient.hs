@@ -7,7 +7,7 @@ import Nubank.Prolog
 defaultHeaders :: IO RequestHeaders
 defaultHeaders = do
   correlationId <- newUUIDByteString
-  return
+  pure
     [ ("X-Correlation-Id", correlationId)
     , ("User-Agent", "Nubank Haskell Client (nubank-client) - https://github.com/manchester-velten/nubank-client")
     ]
@@ -20,7 +20,7 @@ getJSON url = do
   headers  <- defaultPostHeaders
   request  <- setRequestHeaders headers <$> parseRequest url
   response <- httpJSON request
-  return (getResponseBody response)
+  pure (getResponseBody response)
 
 postJSON :: (ToJSON a, FromJSON b) => URL -> a -> IO b
 postJSON url body = do
@@ -30,4 +30,4 @@ postJSON url body = do
             .  setRequestBodyJSON body
            <$> parseRequest url
   response <-  httpJSON request
-  return (getResponseBody response)
+  pure (getResponseBody response)

@@ -29,9 +29,6 @@ data DiscoveryURLs = DiscoveryURLs
   , msat                           :: URL
   } deriving (Show, Eq, Generic)
 
-instance ToJSON DiscoveryURLs where
-  toJSON = genericToJSON $ aesonDrop 0 snakeCase
-
 instance FromJSON DiscoveryURLs where
   parseJSON = genericParseJSON $ aesonDrop 0 snakeCase
 
