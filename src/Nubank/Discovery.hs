@@ -1,6 +1,7 @@
 {-# LANGUAGE DeriveGeneric #-}
 
 module Nubank.Discovery (DiscoveryURLs, getProxyUrls, getLoginUrl) where
+
 import Nubank.Prolog
 import GHC.Generics
 import Data.Aeson

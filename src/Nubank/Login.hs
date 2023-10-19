@@ -28,13 +28,13 @@ type Password = String
 data TokenType = Bearer deriving (Show, Eq)
 
 instance FromJSON TokenType where
-  parseJSON (String "bearer") = do pure Bearer
+  parseJSON (String "bearer") = do return Bearer
   parseJSON _ = empty
 
 data RefreshToken = StringToken deriving (Show, Eq)
 
 instance FromJSON RefreshToken where
-  parseJSON (String "string token") = do pure StringToken
+  parseJSON (String "string token") = do return StringToken
   parseJSON _ = empty
 
 data PasswordAuthRequest = PasswordAuthRequest

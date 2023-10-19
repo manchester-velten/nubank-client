@@ -15,4 +15,4 @@ newUUIDByteString = UUID.toASCIIBytes <$> generateRandom
 (<:>) :: Monad m => a -> m [a] -> m [a]
 (<:>) x xs = do
   xs' <- xs
-  pure (x : xs')
+  return (x : xs')

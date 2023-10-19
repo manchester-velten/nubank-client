@@ -9,9 +9,9 @@ tests = testGroup "Discovery"
   [ testGroup "Proxy URLs"
     [ testCase "Should load proxy URLs without errors" $ do
         _ <- getProxyUrls
-        pure ()
+        return ()
     , testCase "Should load application proxy URLs without errors" $ do
         _ <- getApplicationProxyUrls
-        pure ()
+        return ()
     ]
   ]
