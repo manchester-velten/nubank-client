@@ -8,7 +8,7 @@ import Nubank.Login
 tests :: TestTree
 tests = testGroup "Serialization tests"
   [ testCase "Should serialize PasswordAuthRequest" $ do
-      let request = PasswordAuthRequest
+      let request = PasswordAuthenticationRequest
            { login        = "99999999999"
            , password     = "Xj;BW4d=0G5[7Jt"
            , clientId     = "nubank-client-haskell"
