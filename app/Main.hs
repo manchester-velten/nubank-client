@@ -1,6 +1,6 @@
 module Main (main) where
 
-import Nubank.Login
+import Nubank.Auth.Login
 import System.Environment
 
 main :: IO ()

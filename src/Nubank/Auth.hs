@@ -1,4 +1,4 @@
-module Nubank.Authentication
+module Nubank.Auth
   ( AuthMethod (..)
   , Authentication (..)
   , AuthState (..)
@@ -7,7 +7,7 @@ module Nubank.Authentication
   ) where
 
 import Data.Time
-import Nubank.Login
+import Nubank.Auth.Login
 
 data AuthMethod = LoginAndPassword Login Password
   deriving (Show, Eq)

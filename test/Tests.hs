@@ -2,7 +2,7 @@ module Tests (tests) where
 
 import Test.Tasty
 import qualified Tests.Nubank as Nubank
-import qualified Tests.Nubank.Login as Login
+import qualified Tests.Nubank.Auth.Login as Login
 
 tests :: TestTree
 tests =

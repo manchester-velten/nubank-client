@@ -1,6 +1,6 @@
 {-# LANGUAGE DeriveGeneric #-}
 
-module Nubank.Login
+module Nubank.Auth.Login
   ( PasswordAuthRequest (..)
   , PasswordAuthResponse (..)
   , Login

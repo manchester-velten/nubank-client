@@ -1,9 +1,9 @@
-module Tests.Nubank.Login (tests) where
+module Tests.Nubank.Auth.Login (tests) where
 
 import Test.Tasty
 import Test.Tasty.HUnit
 import Data.Aeson
-import Nubank.Login
+import Nubank.Auth.Login
 
 tests :: TestTree
 tests = testGroup "Serialization tests"
