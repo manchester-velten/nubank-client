@@ -23,8 +23,8 @@ data AuthenticationState = AuthenticationState
   , authentication       :: Authentication
   } deriving (Show, Eq)
 
-applyAuth :: Authenticated a -> AuthenticationState -> IO (a, AuthenticationState)
-applyAuth (Authenticated op) = op
+applyAuthentication :: Authenticated a -> AuthenticationState -> IO (a, AuthenticationState)
+applyAuthentication (Authenticated op) = op
 
 getAuthenticationState :: AuthenticationMethod -> IO AuthenticationState
 getAuthenticationState (LoginAndPassword l p) = do
@@ -39,8 +39,8 @@ getAuthenticationState (LoginAndPassword l p) = do
         , authentication       = auth }
   return state
 
-autoRenewAuthentication :: AuthenticationState -> IO AuthenticationState
-autoRenewAuthentication s = do
+autoRenewAuthenticationState :: AuthenticationState -> IO AuthenticationState
+autoRenewAuthenticationState s = do
   currentTime <- getCurrentTime
   let expirationTime = expiration (authentication s)
   let diff           = nominalDiffTimeToSeconds $ diffUTCTime expirationTime currentTime
@@ -53,25 +53,25 @@ newtype Authenticated a = Authenticated (AuthenticationState -> IO (a, Authentic
 
 instance Functor Authenticated where
   fmap f op = Authenticated (\s -> do
-    s' <- autoRenewAuthentication s
-    (x, s'') <- applyAuth op s'
+    s' <- autoRenewAuthenticationState s
+    (x, s'') <- applyAuthentication op s'
     return (f x, s''))
 
 instance Applicative Authenticated where
   pure x = Authenticated (\s -> do
-    s' <- autoRenewAuthentication s
+    s' <- autoRenewAuthenticationState s
     return (x, s'))
   xf <*> xa = Authenticated (\s -> do
-    s' <- autoRenewAuthentication s
-    (f, s'')  <- applyAuth xf s'
-    (x, s''') <- applyAuth xa s''
+    s' <- autoRenewAuthenticationState s
+    (f, s'')  <- applyAuthentication xf s'
+    (x, s''') <- applyAuthentication xa s''
     return (f x, s'''))
 
 instance Monad Authenticated where
   x >>= f = Authenticated (\s -> do
-    s' <- autoRenewAuthentication s
-    (x', s'') <- applyAuth x s'
-    applyAuth (f x') s'')
+    s' <- autoRenewAuthenticationState s
+    (x', s'') <- applyAuthentication x s'
+    applyAuthentication (f x') s'')
 
 authenticate :: AuthenticationMethod -> Authenticated AuthenticationState
 authenticate method = Authenticated (\s -> do
