@@ -1,8 +1,8 @@
 {-# LANGUAGE DeriveGeneric #-}
 
 module Nubank.Login
-  ( PasswordAuthRequest (..)
-  , PasswordAuthResponse (..)
+  ( PasswordAuthenticationRequest (..)
+  , PasswordAuthenticationResponse (..)
   , Login
   , Password
   , TokenType (..)
@@ -37,14 +37,14 @@ instance FromJSON RefreshToken where
   parseJSON (String "string token") = do return StringToken
   parseJSON _ = empty
 
-data PasswordAuthRequest = PasswordAuthRequest
+data PasswordAuthenticationRequest = PasswordAuthenticationRequest
   { login        :: Login
   , password     :: Password
   , clientId     :: String
   , clientSecret :: String
   } deriving (Show, Eq)
 
-instance ToJSON PasswordAuthRequest where
+instance ToJSON PasswordAuthenticationRequest where
   toJSON request =
     object [ "grant_type"    .= String "password"
            , "login"         .= login request
@@ -79,7 +79,7 @@ data Links = Links
 instance FromJSON Links where
   parseJSON = genericParseJSON $ aesonDrop 0 snakeCase
 
-data PasswordAuthResponse = PasswordAuthResponse
+data PasswordAuthenticationResponse = PasswordAuthenticationResponse
   { accessToken   :: String
   , tokenType     :: TokenType
   , _links        :: Links
@@ -87,17 +87,17 @@ data PasswordAuthResponse = PasswordAuthResponse
   , refreshBefore :: UTCTime
   } deriving (Show, Eq, Generic)
 
-instance FromJSON PasswordAuthResponse where
+instance FromJSON PasswordAuthenticationResponse where
   parseJSON = genericParseJSON $ aesonDrop 0 snakeCase
 
-passwordAuth :: PasswordAuthRequest -> IO PasswordAuthResponse
+passwordAuth :: PasswordAuthenticationRequest -> IO PasswordAuthenticationResponse
 passwordAuth request = do
   loginUrl <- getLoginUrl
   postJSON loginUrl request
 
-passwordAuthSimple :: Login -> Password -> IO PasswordAuthResponse
+passwordAuthSimple :: Login -> Password -> IO PasswordAuthenticationResponse
 passwordAuthSimple usr pwd = do
-  let request = PasswordAuthRequest
+  let request = PasswordAuthenticationRequest
        { login        = usr
        , password     = pwd
        , clientId     = "nubank-client-haskell"
