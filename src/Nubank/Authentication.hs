@@ -53,7 +53,7 @@ newtype Authenticated a = Authenticated (AuthenticationState -> IO (a, Authentic
 
 instance Functor Authenticated where
   fmap f op = Authenticated (\s -> do
-    s' <- autoRenewAuthenticationState s
+    s'       <- autoRenewAuthenticationState s
     (x, s'') <- applyAuthentication op s'
     return (f x, s''))
 
@@ -62,14 +62,14 @@ instance Applicative Authenticated where
     s' <- autoRenewAuthenticationState s
     return (x, s'))
   xf <*> xa = Authenticated (\s -> do
-    s' <- autoRenewAuthenticationState s
+    s'        <- autoRenewAuthenticationState s
     (f, s'')  <- applyAuthentication xf s'
     (x, s''') <- applyAuthentication xa s''
     return (f x, s'''))
 
 instance Monad Authenticated where
   x >>= f = Authenticated (\s -> do
-    s' <- autoRenewAuthenticationState s
+    s'        <- autoRenewAuthenticationState s
     (x', s'') <- applyAuthentication x s'
     applyAuthentication (f x') s'')
 
