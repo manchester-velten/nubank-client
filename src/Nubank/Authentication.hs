@@ -1,7 +1,7 @@
 module Nubank.Authentication
-  ( AuthenticationMethod (..)
+  ( AuthMethod (..)
   , Authentication (..)
-  , AuthenticationState (..)
+  , AuthState (..)
   , Authenticated (..)
   , authenticate
   ) where
@@ -9,7 +9,7 @@ module Nubank.Authentication
 import Data.Time
 import Nubank.Login
 
-data AuthenticationMethod = LoginAndPassword Login Password
+data AuthMethod = LoginAndPassword Login Password
   deriving (Show, Eq)
 
 data Authentication = Authentication
@@ -18,15 +18,15 @@ data Authentication = Authentication
   , expiration :: UTCTime
   } deriving (Show, Eq)
 
-data AuthenticationState = AuthenticationState
-  { authenticationMethod :: AuthenticationMethod
+data AuthState = AuthState
+  { authenticationMethod :: AuthMethod
   , authentication       :: Authentication
   } deriving (Show, Eq)
 
-applyAuthentication :: Authenticated a -> AuthenticationState -> IO (a, AuthenticationState)
+applyAuthentication :: Authenticated a -> AuthState -> IO (a, AuthState)
 applyAuthentication (Authenticated op) = op
 
-getAuthenticationState :: AuthenticationMethod -> IO AuthenticationState
+getAuthenticationState :: AuthMethod -> IO AuthState
 getAuthenticationState (LoginAndPassword l p) = do
   authResponse <- passwordAuthSimple l p
   let auth = Authentication
@@ -34,12 +34,12 @@ getAuthenticationState (LoginAndPassword l p) = do
         , links      = _links authResponse
         , expiration = refreshBefore authResponse
         }
-  let state = AuthenticationState
+  let state = AuthState
         { authenticationMethod = LoginAndPassword l p
         , authentication       = auth }
   return state
 
-autoRenewAuthenticationState :: AuthenticationState -> IO AuthenticationState
+autoRenewAuthenticationState :: AuthState -> IO AuthState
 autoRenewAuthenticationState s = do
   currentTime <- getCurrentTime
   let expirationTime = expiration (authentication s)
@@ -49,7 +49,7 @@ autoRenewAuthenticationState s = do
     then getAuthenticationState method
     else return s
 
-newtype Authenticated a = Authenticated (AuthenticationState -> IO (a, AuthenticationState))
+newtype Authenticated a = Authenticated (AuthState -> IO (a, AuthState))
 
 instance Functor Authenticated where
   fmap f op = Authenticated (\s -> do
@@ -73,7 +73,7 @@ instance Monad Authenticated where
     (x', s'') <- applyAuthentication x s'
     applyAuthentication (f x') s'')
 
-authenticate :: AuthenticationMethod -> Authenticated AuthenticationState
+authenticate :: AuthMethod -> Authenticated AuthState
 authenticate method = Authenticated (\s -> do
   state <- getAuthenticationState method
   return (s, state))
